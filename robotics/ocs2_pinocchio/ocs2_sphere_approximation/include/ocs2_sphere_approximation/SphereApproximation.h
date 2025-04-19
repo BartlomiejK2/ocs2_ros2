@@ -32,64 +32,65 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <ocs2_core/Types.h>
 
 #include <ocs2_pinocchio_interface/PinocchioInterface.h>
+
 #include <hpp/fcl/shape/geometric_shapes.h>
 
-namespace ocs2
-{
-    /**
-     * Sphere approximation of geometrical shapes.
-     *
-     * This class approximates the collision primitive geometry with spheres based on [1]. The class is to be used with pinocchio::GeometryModel.
-     * Currently, the following primitive geometries are supported: box, cylinder, and sphere.
-     * Reference:
-     * [1] A. Voelz and K. Graichen, "Computation of Collision Distance and Gradient using an Automatic Sphere Approximation of the Robot Model
-     * with Bounded Error," ISR 2018; 50th International Symposium on Robotics, 2018, pp. 1-8.
-     */
-    class SphereApproximation
-    {
-    public:
-        using vector3_t = Eigen::Matrix<scalar_t, 3, 1>;
+namespace ocs2 {
 
-        /** Constructor
-         * @param [in] geometry : geometry stored in GeometryModel
-         * @param [in] geomObjectId : index of the geometry object in GeometryModel
-         * @param [in] maxExcess : maximum allowed excess from the object surface to the sphere surface
-         * @param [in] shrinkRatio: ratio of shrinking maxExcess when recursive approximation of the cylinder base is necessary
-         */
-        SphereApproximation(const hpp::fcl::CollisionGeometry& geometry, size_t geomObjectId, scalar_t maxExcess,
-                            scalar_t shrinkRatio);
+/**
+ * Sphere approximation of geometrical shapes.
+ *
+ * This class approximates the collision primitive geometry with spheres based on [1]. The class is to be used with
+ * pinocchio::GeometryModel.
+ *
+ * Currently the following primitive geometries are supported: box, cylinder, and sphere.
+ *
+ * Reference:
+ * [1] A. Voelz and K. Graichen, "Computation of Collision Distance and Gradient using an Automatic Sphere Approximation of the Robot Model
+ * with Bounded Error," ISR 2018; 50th International Symposium on Robotics, 2018, pp. 1-8.
+ */
+class SphereApproximation {
+ public:
+  using vector3_t = Eigen::Matrix<scalar_t, 3, 1>;
 
-        /** Get the index of the geometry object stored in GeometryModel */
-        size_t getGeomObjId() const { return geomObjId_; };
+  /** Constructor
+   * @param [in] geometry : geometry stored in GeometryModel
+   * @param [in] geomObjectId : index of the geometry object in GeometryModel
+   * @param [in] maxExcess : maximum allowed excess from the object surface to the sphere surface
+   * @param [in] shrinkRatio: ratio of shrinking maxExcess when recursive approximation of the cylinder base is necessary
+   */
+  SphereApproximation(const hpp::fcl::CollisionGeometry& geometry, size_t geomObjectId, scalar_t maxExcess, scalar_t shrinkRatio);
 
-        /** Get the maximum alloowed excess from the the object surface to the sphere surface */
-        scalar_t getMaxExcess() const { return maxExcess_; };
+  /** Get the index of the geometry object stored in GeometryModel */
+  size_t getGeomObjId() const { return geomObjId_; };
 
-        /** Get the number of spheres approximating the object */
-        size_t getNumSpheres() const { return numSpheres_; };
+  /** Get the maximum alloowed excess from the the object surface to the sphere surface */
+  scalar_t getMaxExcess() const { return maxExcess_; };
 
-        /** Get the radius of the spheres approximating the object */
-        scalar_t getSphereRadius() const { return sphereRadius_; };
+  /** Get the number of spheres approximating the object */
+  size_t getNumSpheres() const { return numSpheres_; };
 
-        /** Get the positions of the sphere centers w.r.t the object center */
-        const std::vector<vector3_t>& getSphereCentersToObjectCenter() const { return sphereCentersToObjectCenter_; };
+  /** Get the radius of the spheres approximating the object */
+  scalar_t getSphereRadius() const { return sphereRadius_; };
 
-    private:
-        void approximateBox(const vector_t& sides);
-        void approximateCylinder(scalar_t radius, scalar_t length);
-        void approximateRectanglularCrossSection(const vector_t& sides, const size_array_t& idxSorted,
-                                                 scalar_t maxExcess, scalar_t& sphereRadius,
-                                                 vector_t& numSpheres, vector_t& distances);
-        bool approximateCircleBase(scalar_t radiusBase, scalar_t radiusSphereCrossSection, scalar_t maxExcessR,
-                                   scalar_t& shift, scalar_t& alpha,
-                                   scalar_t& numCircles);
+  /** Get the positions of the sphere centers w.r.t the object center */
+  const std::vector<vector3_t>& getSphereCentersToObjectCenter() const { return sphereCentersToObjectCenter_; };
 
-        const size_t geomObjId_;
-        const scalar_t maxExcess_;
-        const scalar_t shrinkRatio_;
+ private:
+  void approximateBox(const vector_t& sides);
+  void approximateCylinder(scalar_t radius, scalar_t length);
+  void approximateRectanglularCrossSection(const vector_t& sides, const size_array_t& idxSorted, scalar_t maxExcess, scalar_t& sphereRadius,
+                                           vector_t& numSpheres, vector_t& distances);
+  bool approximateCircleBase(scalar_t radiusBase, scalar_t radiusSphereCrossSection, scalar_t maxExcessR, scalar_t& shift, scalar_t& alpha,
+                             scalar_t& numCircles);
 
-        size_t numSpheres_;
-        scalar_t sphereRadius_;
-        std::vector<vector3_t> sphereCentersToObjectCenter_;
-    };
-} // namespace ocs2
+  const size_t geomObjId_;
+  const scalar_t maxExcess_;
+  const scalar_t shrinkRatio_;
+
+  size_t numSpheres_;
+  scalar_t sphereRadius_;
+  std::vector<vector3_t> sphereCentersToObjectCenter_;
+};
+
+}  // namespace ocs2

@@ -7,19 +7,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(dependencies
         ocs2_pinocchio_interface
+        ocs2_robotic_assets
 )
-
-# Include the FindPkgConfig module
-include(FindPkgConfig)
-
-# Use pkg_check_modules to find urdfdom and get its version
-pkg_check_modules(URDFDOM urdfdom)
-
-if (URDFDOM_VERSION VERSION_GREATER_EQUAL 4.0.0)
-    add_definitions(-DURDFDOM_VERSION_GT_4)
-    find_package(tinyxml2 REQUIRED)
-    list(APPEND dependencies tinyxml2)
-endif ()
 
 find_package(ament_cmake REQUIRED)
 find_package(ocs2_pinocchio_interface REQUIRED)
@@ -50,11 +39,24 @@ target_include_directories(${PROJECT_NAME}
         PUBLIC
         "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
         "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
-if (URDFDOM_VERSION VERSION_GREATER_EQUAL 4.0.0)
-    target_link_libraries(${PROJECT_NAME} tinyxml2)
-endif ()
+
 ament_target_dependencies(${PROJECT_NAME} ${dependencies})
 target_compile_options(${PROJECT_NAME} PUBLIC ${FLAGS})
+
+####################
+## Clang tooling ###
+####################
+
+find_package(cmake_clang_tools QUIET)
+if (cmake_clang_tools_FOUND)
+    message(STATUS "Run clang tooling")
+    add_clang_tooling(
+            TARGETS ${PROJECT_NAME}
+            SOURCE_DIRS src include
+            CT_HEADER_DIRS include
+            CF_WERROR
+    )
+endif (cmake_clang_tools_FOUND)
 
 #############
 ## Install ##
@@ -84,10 +86,9 @@ if (BUILD_TESTING)
     find_package(ament_cmake_gtest REQUIRED)
 
     ament_add_gtest(PinocchioSphereKinematicsTest test/testPinocchioSphereKinematics.cpp)
-    ament_target_dependencies(PinocchioSphereKinematicsTest ${dependencies} ocs2_robotic_assets)
-    target_link_libraries(PinocchioSphereKinematicsTest ${PROJECT_NAME} ${COAL_LIBRARIES})
+    ament_target_dependencies(PinocchioSphereKinematicsTest ${dependencies})
+    target_link_libraries(PinocchioSphereKinematicsTest ${PROJECT_NAME})
     target_compile_options(PinocchioSphereKinematicsTest PUBLIC ${FLAGS})
-
 endif ()
 
 ament_package()

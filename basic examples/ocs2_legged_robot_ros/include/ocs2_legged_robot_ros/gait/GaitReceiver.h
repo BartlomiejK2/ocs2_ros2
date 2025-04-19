@@ -26,9 +26,8 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ******************************************************************************/
-#ifndef GAITRECEIVER_H
-#define GAITRECEIVER_H
 
+#pragma once
 
 #include <ocs2_core/Types.h>
 #include <ocs2_legged_robot/gait/GaitSchedule.h>
@@ -40,26 +39,23 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "rclcpp/rclcpp.hpp"
 
-namespace ocs2::legged_robot
-{
-    class GaitReceiver final : public SolverSynchronizedModule
-    {
+namespace ocs2::legged_robot {
+    class GaitReceiver : public SolverSynchronizedModule {
     public:
-        GaitReceiver(const rclcpp::Node::SharedPtr& node,
+        GaitReceiver(const rclcpp::Node::SharedPtr &node,
                      std::shared_ptr<GaitSchedule> gaitSchedulePtr,
-                     const std::string& robotName);
+                     const std::string &robotName);
 
         void preSolverRun(scalar_t initTime, scalar_t finalTime,
-                          const vector_t& currentState,
-                          const ReferenceManagerInterface& referenceManager) override;
+                          const vector_t &currentState,
+                          const ReferenceManagerInterface &referenceManager) override;
 
-        void postSolverRun(const PrimalSolution& primalSolution) override
-        {
+        void postSolverRun(const PrimalSolution &primalSolution) override {
         }
 
     private:
         void mpcModeSequenceCallback(
-            const ocs2_msgs::msg::ModeSchedule::ConstSharedPtr& msg);
+            const ocs2_msgs::msg::ModeSchedule::ConstSharedPtr &msg);
 
         std::shared_ptr<GaitSchedule> gaitSchedulePtr_;
 
@@ -71,4 +67,3 @@ namespace ocs2::legged_robot
         ModeSequenceTemplate receivedGait_;
     };
 }
-#endif // GAITRECEIVER_H

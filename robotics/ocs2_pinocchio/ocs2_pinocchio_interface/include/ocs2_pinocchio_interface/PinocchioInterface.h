@@ -41,89 +41,88 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <ocs2_pinocchio_interface/pinocchio_forward_declaration.h>
 #include <urdf_model/model.h>
 
-namespace ocs2
-{
-    template <typename SCALAR>
-    class PinocchioInterfaceTpl;
+namespace ocs2 {
 
-    using PinocchioInterface = PinocchioInterfaceTpl<scalar_t>;
-    using PinocchioInterfaceCppAd = PinocchioInterfaceTpl<ad_scalar_t>;
+template <typename SCALAR>
+class PinocchioInterfaceTpl;
 
-    /**
-     * Pinocchio interface class contatining robot model and data.
-     * The robot model is shared between interface instances.
-     */
-    template <typename SCALAR>
-    class PinocchioInterfaceTpl final
-    {
-    public:
-        using Model =
-        pinocchio::ModelTpl<SCALAR, 0, pinocchio::JointCollectionDefaultTpl>;
-        using Data =
-        pinocchio::DataTpl<SCALAR, 0, pinocchio::JointCollectionDefaultTpl>;
-        using JointModel =
-        pinocchio::JointModelTpl<scalar_t, 0,
-                                 pinocchio::JointCollectionDefaultTpl>;
+using PinocchioInterface = PinocchioInterfaceTpl<scalar_t>;
+using PinocchioInterfaceCppAd = PinocchioInterfaceTpl<ad_scalar_t>;
 
-        // Template for conditional compilation using SFINAE
-        template <typename T>
-        using EnableIfScalar_t =
-        typename std::enable_if<std::is_same<T, scalar_t>::value, bool>::type;
+/**
+ * Pinocchio interface class contatining robot model and data.
+ * The robot model is shared between interface instances.
+ */
+template <typename SCALAR>
+class PinocchioInterfaceTpl final {
+ public:
+  using Model =
+      pinocchio::ModelTpl<SCALAR, 0, pinocchio::JointCollectionDefaultTpl>;
+  using Data =
+      pinocchio::DataTpl<SCALAR, 0, pinocchio::JointCollectionDefaultTpl>;
+  using JointModel =
+      pinocchio::JointModelTpl<scalar_t, 0,
+                               pinocchio::JointCollectionDefaultTpl>;
 
-        /**
-         * Construct from given pinocchio model
-         * @param[in] model pinocchio model
-         */
-        explicit PinocchioInterfaceTpl(
-            const Model& model,
-            std::shared_ptr<const urdf::ModelInterface> urdfModelPtr =
-                std::shared_ptr<const urdf::ModelInterface>());
+  // Template for conditional compilation using SFINAE
+  template <typename T>
+  using EnableIfScalar_t =
+      typename std::enable_if<std::is_same<T, scalar_t>::value, bool>::type;
 
-        /** Destructor */
-        ~PinocchioInterfaceTpl();
+  /**
+   * Construct from given pinocchio model
+   * @param[in] model pinocchio model
+   */
+  explicit PinocchioInterfaceTpl(
+      const Model& model,
+      const std::shared_ptr<const ::urdf::ModelInterface> urdfModelPtr =
+          std::shared_ptr<const ::urdf::ModelInterface>());
 
-        /** Copy constructor */
-        PinocchioInterfaceTpl(const PinocchioInterfaceTpl& rhs);
+  /** Destructor */
+  ~PinocchioInterfaceTpl();
 
-        /** Move constructor */
-        PinocchioInterfaceTpl(PinocchioInterfaceTpl&& rhs);
+  /** Copy constructor */
+  PinocchioInterfaceTpl(const PinocchioInterfaceTpl& rhs);
 
-        /** Copy assignment operator */
-        PinocchioInterfaceTpl& operator=(const PinocchioInterfaceTpl& rhs);
+  /** Move constructor */
+  PinocchioInterfaceTpl(PinocchioInterfaceTpl&& rhs);
 
-        /** Move assignment */
-        PinocchioInterfaceTpl<SCALAR>& operator=(PinocchioInterfaceTpl&& rhs);
+  /** Copy assignment operator */
+  PinocchioInterfaceTpl& operator=(const PinocchioInterfaceTpl& rhs);
 
-        /** Get the pinocchio model */
-        const Model& getModel() const { return *robotModelPtr_; }
+  /** Move assignment */
+  PinocchioInterfaceTpl<SCALAR>& operator=(PinocchioInterfaceTpl&& rhs);
 
-        /** Get the pinocchio data */
-        Data& getData() { return *robotDataPtr_; }
-        const Data& getData() const { return *robotDataPtr_; }
+  /** Get the pinocchio model */
+  const Model& getModel() const { return *robotModelPtr_; }
 
-        /** Get the urdf model */
-        const std::shared_ptr<const ::urdf::ModelInterface>& getUrdfModelPtr() const
-        {
-            return urdfModelPtr_;
-        }
+  /** Get the pinocchio data */
+  Data& getData() { return *robotDataPtr_; }
+  const Data& getData() const { return *robotDataPtr_; }
 
-        /** Cast pinocchio interface to CppAD scalar type. */
-        template <typename T = SCALAR, EnableIfScalar_t<T>  = true>
-        PinocchioInterfaceCppAd toCppAd() const;
+  /** Get the urdf model */
+  const std::shared_ptr<const ::urdf::ModelInterface>& getUrdfModelPtr() const {
+    return urdfModelPtr_;
+  }
 
-        friend std::ostream& operator<<(std::ostream& os,
-                                        const PinocchioInterfaceTpl<scalar_t>& p);
+  /** Cast pinocchio interface to CppAD scalar type. */
+  template <typename T = SCALAR, EnableIfScalar_t<T> = true>
+  PinocchioInterfaceCppAd toCppAd() const;
 
-    private:
-        std::shared_ptr<const Model> robotModelPtr_;
-        std::unique_ptr<Data> robotDataPtr_;
-        std::shared_ptr<const urdf::ModelInterface> urdfModelPtr_;
-    };
+  friend std::ostream& operator<<(std::ostream& os,
+                                  const PinocchioInterfaceTpl<scalar_t>& p);
 
-    /** Print PinocchioInterfaceTpl info to stream */
-    std::ostream& operator<<(std::ostream& os, const PinocchioInterface& p);
+ private:
+  std::shared_ptr<const Model> robotModelPtr_;
+  std::unique_ptr<Data> robotDataPtr_;
+  std::shared_ptr<const ::urdf::ModelInterface> urdfModelPtr_;
+};
 
-    /* Explicit template instantiation for scalar_t and ad_scalar_t */
-    extern template class PinocchioInterfaceTpl<scalar_t>;
-    extern template class PinocchioInterfaceTpl<ad_scalar_t>;
-} // namespace ocs2
+/** Print PinocchioInterfaceTpl info to stream */
+std::ostream& operator<<(std::ostream& os, const PinocchioInterface& p);
+
+/* Explicit template instantiation for scalar_t and ad_scalar_t */
+extern template class PinocchioInterfaceTpl<scalar_t>;
+extern template class PinocchioInterfaceTpl<ad_scalar_t>;
+
+}  // namespace ocs2

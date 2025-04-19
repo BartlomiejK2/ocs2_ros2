@@ -46,7 +46,7 @@ namespace ocs2 {
     PinocchioGeometryInterface::PinocchioGeometryInterface(
         const PinocchioInterface &pinocchioInterface,
         const std::vector<std::pair<size_t, size_t> > &collisionObjectPairs)
-        : geometryModelPtr_(std::make_shared<pinocchio::GeometryModel>()) {
+        : geometryModelPtr_(new pinocchio::GeometryModel) {
         buildGeomFromPinocchioInterface(pinocchioInterface, *geometryModelPtr_);
 
         addCollisionObjectPairs(pinocchioInterface, collisionObjectPairs);
@@ -56,7 +56,7 @@ namespace ocs2 {
         const PinocchioInterface &pinocchioInterface,
         const std::vector<std::pair<std::string, std::string> > &collisionLinkPairs,
         const std::vector<std::pair<size_t, size_t> > &collisionObjectPairs)
-        : geometryModelPtr_(std::make_shared<pinocchio::GeometryModel>()) {
+        : geometryModelPtr_(new pinocchio::GeometryModel) {
         buildGeomFromPinocchioInterface(pinocchioInterface, *geometryModelPtr_);
 
         addCollisionObjectPairs(pinocchioInterface, collisionObjectPairs);
@@ -69,7 +69,7 @@ namespace ocs2 {
         const PinocchioInterface &pinocchioInterface) const {
         pinocchio::GeometryData geometryData(*geometryModelPtr_);
 
-        updateGeometryPlacements(pinocchioInterface.getModel(),
+        pinocchio::updateGeometryPlacements(pinocchioInterface.getModel(),
                                             pinocchioInterface.getData(),
                                             *geometryModelPtr_, geometryData);
         pinocchio::computeDistances(*geometryModelPtr_, geometryData);
