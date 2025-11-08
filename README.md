@@ -67,7 +67,7 @@ Quick start guide:
 * Compile legged robot example
     ```bash
     cd ~/ocs2_ws
-    colcon build --packages-up-to ocs2_legged_robot_ros
+    colcon build --packages-up-to ocs2_legged_robot_ros --cmake-args -DCMAKE_BUILD_TYPE=Release
     ```
 * Run the legged robot example
     ```bash
