@@ -1,8 +1,7 @@
 #include "ocs2_anymal_models/QuadrupedKinematics.h"
 
 // Pinocchio
-#include <pinocchio/multibody/data.hpp>
-#include <pinocchio/multibody/model.hpp>
+#include <pinocchio/multibody.hpp>
 #include <pinocchio/parsers/urdf.hpp>
 
 #include <pinocchio/algorithm/frames.hpp>

@@ -37,7 +37,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <ocs2_self_collision/PinocchioGeometryInterface.h>
 #include <ocs2_self_collision_visualization/GeometryInterfaceVisualization.h>
 
-#include <pinocchio/multibody/geometry.hpp>
+#include <pinocchio/multibody.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
 
 #include "rclcpp/rclcpp.hpp"

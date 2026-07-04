@@ -7,7 +7,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(dependencies
         ocs2_robotic_tools
         hpp-fcl
-        pinocchio
         urdf
         urdfdom
 )
@@ -42,6 +41,7 @@ target_include_directories(${PROJECT_NAME}
         "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
 
 ament_target_dependencies(${PROJECT_NAME} ${dependencies})
+target_link_libraries(${PROJECT_NAME} pinocchio::pinocchio)
 target_compile_options(${PROJECT_NAME} PUBLIC ${OCS2_PINOCCHIO_FLAGS})
 
 ####################
@@ -74,6 +74,7 @@ install(
         RUNTIME DESTINATION bin
 )
 ament_export_dependencies(${dependencies})
+ament_export_dependencies(pinocchio)
 ament_export_targets(export_${PROJECT_NAME} HAS_LIBRARY_TARGET)
 
 

@@ -64,7 +64,7 @@ namespace ocs2 {
     }
 
 
-    std::vector<hpp::fcl::DistanceResult>
+    std::vector<coal::DistanceResult>
     PinocchioGeometryInterface::computeDistances(
         const PinocchioInterface &pinocchioInterface) const {
         pinocchio::GeometryData geometryData(*geometryModelPtr_);

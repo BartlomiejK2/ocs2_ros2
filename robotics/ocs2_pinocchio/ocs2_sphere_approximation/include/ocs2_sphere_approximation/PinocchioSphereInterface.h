@@ -29,7 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #pragma once
 
-#include <pinocchio/multibody/model.hpp>
+#include <pinocchio/multibody.hpp>
 
 #include <utility>
 
@@ -37,7 +37,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <ocs2_sphere_approximation/SphereApproximation.h>
 
-#include <hpp/fcl/collision_data.h>
+#include <coal/collision_data.h>
 
 namespace ocs2 {
 

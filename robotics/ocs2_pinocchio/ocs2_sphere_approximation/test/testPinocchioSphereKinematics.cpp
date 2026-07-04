@@ -36,7 +36,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <pinocchio/algorithm/frames.hpp>
 #include <pinocchio/algorithm/kinematics.hpp>
 #include <pinocchio/fwd.hpp>
-#include <pinocchio/multibody/geometry.hpp>
+#include <pinocchio/multibody.hpp>
 
 using vector3_t = Eigen::Matrix<ocs2::scalar_t, 3, 1>;
 

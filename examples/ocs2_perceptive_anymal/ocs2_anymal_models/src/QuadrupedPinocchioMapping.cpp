@@ -1,8 +1,7 @@
 #include "ocs2_anymal_models/QuadrupedPinocchioMapping.h"
 
 // Pinocchio
-#include <pinocchio/multibody/data.hpp>
-#include <pinocchio/multibody/model.hpp>
+#include <pinocchio/multibody.hpp>
 
 namespace anymal {
 

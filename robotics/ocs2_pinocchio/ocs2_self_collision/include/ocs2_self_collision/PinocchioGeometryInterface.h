@@ -29,16 +29,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #pragma once
 
-#include <hpp/fcl/collision_data.h>
+#include <coal/collision_data.h>
+#include <pinocchio/geometry.hpp>
 #include <ocs2_pinocchio_interface/PinocchioInterface.h>
 #include <urdf_model/model.h>
 
 #include <utility>
-
-/* Forward declaration of pinocchio geometry types */
-namespace pinocchio {
-    struct GeometryModel;
-} // namespace pinocchio
 
 namespace ocs2 {
     class PinocchioGeometryInterface final {
@@ -79,7 +75,7 @@ namespace ocs2 {
          * @return An array of distances between pairs of collision bodies defined in
          * the constructor.
          */
-        std::vector<hpp::fcl::DistanceResult> computeDistances(
+        std::vector<coal::DistanceResult> computeDistances(
             const PinocchioInterface &pinocchioInterface) const;
 
         /** Get the number of collision pairs */

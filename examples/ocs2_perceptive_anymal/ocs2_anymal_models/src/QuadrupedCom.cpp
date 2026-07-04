@@ -6,8 +6,7 @@
 #include <ocs2_pinocchio_interface/urdf.h>
 
 // Pinocchio
-#include <pinocchio/multibody/data.hpp>
-#include <pinocchio/multibody/model.hpp>
+#include <pinocchio/multibody.hpp>
 
 #include <pinocchio/algorithm/center-of-mass.hpp>
 #include <pinocchio/algorithm/crba.hpp>

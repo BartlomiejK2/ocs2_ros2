@@ -31,7 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <pinocchio/fwd.hpp>
 
 #include <pinocchio/algorithm/kinematics.hpp>
-#include <pinocchio/multibody/geometry.hpp>
+#include <pinocchio/multibody.hpp>
 
 #include <ocs2_self_collision/SelfCollisionCppAd.h>
 
@@ -67,7 +67,7 @@ namespace ocs2 {
 
 
     vector_t SelfCollisionCppAd::getValue(const PinocchioInterface &pinocchioInterface) const {
-        const std::vector<hpp::fcl::DistanceResult> distanceArray = pinocchioGeometryInterface_.computeDistances(
+        const std::vector<coal::DistanceResult> distanceArray = pinocchioGeometryInterface_.computeDistances(
             pinocchioInterface);
 
         vector_t violations = vector_t::Zero(distanceArray.size());
@@ -82,7 +82,7 @@ namespace ocs2 {
     std::pair<vector_t, matrix_t> SelfCollisionCppAd::getLinearApproximation(
         const PinocchioInterface &pinocchioInterface,
         const vector_t &q) const {
-        const std::vector<hpp::fcl::DistanceResult> distanceArray = pinocchioGeometryInterface_.computeDistances(
+        const std::vector<coal::DistanceResult> distanceArray = pinocchioGeometryInterface_.computeDistances(
             pinocchioInterface);
 
         vector_t pointsInWorldFrame(distanceArray.size() * numberOfParamsPerResult_);
